@@ -1,0 +1,145 @@
+import random
+import statistics
+
+empleados = ["Juan Pérez", "María García", "Carlos López", "Ana Martínez", "Pedro Rodríguez", 
+             "Laura Hernández", "Miguel Sánchez", "Isabel Gómez", "Francisco Díaz", "Elena Fernández"]
+
+def generar():
+    sueldos = {}  
+    for empleado in empleados:
+        sueldo = random.randint(300000, 2500000)  # Generar un sueldo aleatorio para el empleado
+        sueldos[empleado] = sueldo  
+    return sueldos
+
+def clasificar(sueldosempleados):
+    menores600000 = []
+    entre600000_800000 = []
+    mayores1000000 = []
+    for empleado, sueldo in sueldosempleados.items():
+        if sueldo < 600000:
+            menores600000.append((empleado, sueldo))
+        elif 600000 <= sueldo <= 800000:
+            entre600000_800000.append((empleado, sueldo))
+        elif sueldo > 1000000:
+            mayores1000000.append((empleado, sueldo))
+    menuClasificar = '''
+    1. Sueldos menores a 600000
+    2. Sueldos entre 600000 y 800000
+    3. Sueldos mayores a 1.000.000
+    4. Salir
+    '''
+    print(menuClasificar)
+    while True:
+        op1 = int(input('Ingrese opción: '))
+        while(op1 < 1 or op1 > 4):
+            op1 = int(input('Ingrese opción del 1 al 4: '))
+        if(op1 == 1):
+            print("Sueldos menores a 600000: ")
+            for empleado, sueldo in menores600000:
+                print(f"{empleado}: {sueldo}")
+        elif(op1 == 2):
+            print("\nSueldos entre 600000 y 800000: ")
+            for empleado, sueldo in entre600000_800000:
+                print(f"{empleado}: {sueldo}")
+        elif(op1 == 3):
+            print("\nSueldos mayores a 1.000.000: ")
+            for empleado, sueldo in mayores1000000:
+                print(f"{empleado}: {sueldo}")
+        elif(op1 == 4):
+            break
+
+def max_sueldo(diccionariosueldos):
+    empleadomayorsueldo = max(diccionariosueldos, key=diccionariosueldos.get)
+    return empleadomayorsueldo, diccionariosueldos[empleadomayorsueldo]
+
+def min_sueldo(diccionariosueldos):
+    empleadomenorsueldo = min(diccionariosueldos, key=diccionariosueldos.get)
+    return empleadomenorsueldo, diccionariosueldos[empleadomenorsueldo]
+
+def promedio_sueldo(diccionariosueldos):
+    totalsueldos = sum(diccionariosueldos.values())  
+    cantidadempleados = len(diccionariosueldos)  
+    promedio = totalsueldos / cantidadempleados  
+    return promedio
+
+def media_sueldo(diccionario_sueldos):
+    sueldos = list(diccionario_sueldos.values())
+    if not sueldos:
+        raise ValueError("El diccionario de sueldos está vacío")
+    media_geometrica = statistics.geometric_mean(sueldos)
+    return media_geometrica
+
+def estadistica(sueldos_empleados):
+    menu = '''
+    1. Sueldo máximo
+    2. Sueldo mínimo
+    3. Sueldo promedio
+    4. Media geométrica
+    5. Salir
+    '''
+    while True:
+        print(menu)
+        op2 = int(input('Ingrese opción: '))
+        while(op2 < 1 or op2 > 5):
+            op2 = int(input('Ingrese opción del 1 al 5: '))
+        if op2 == 1:
+            empleado_max, sueldo_max = max_sueldo(sueldos_empleados)
+            print(f"El empleado con el mayor sueldo es {empleado_max} con un sueldo de {sueldo_max}")
+        elif op2 == 2:
+            empleado_min, sueldo_min = min_sueldo(sueldos_empleados)
+            print(f"El empleado con el menor sueldo es {empleado_min} con un sueldo de {sueldo_min}")
+        elif op2 == 3:
+            sueldo_promedio = promedio_sueldo(sueldos_empleados)
+            print(f"El sueldo promedio es {sueldo_promedio:.2f}")
+        elif op2 == 4:
+            try:
+                media_geo = media_sueldo(sueldos_empleados)
+                print(f"La media geométrica de los sueldos es: {media_geo}")
+            except ValueError as e:
+                print(f"Error: {e}")
+        elif op2 == 5:
+            break
+
+def reporteSueldo(sueldos_empleados):
+    print("Reporte de sueldos:")
+    for empleado, sueldo in sueldos_empleados.items():
+        print(f"{empleado}: ${sueldo:,}")
+
+def menu():
+    """Muestra el menú principal del programa."""
+    sueldos_empleados = {}  # Diccionario vacío para almacenar los sueldos generados
+    while True:
+        menu = '''
+        1. Asignar sueldos aleatorios
+        2. Clasificar sueldos
+        3. Ver estadísticas
+        4. Reporte de sueldos
+        5. Salir del programa
+        '''
+        print(menu)
+        op = int(input('Ingrese opción del 1 al 5: '))
+        while op < 1 or op > 5:
+            op = int(input('Debe ser entre 1 y 5\nIngrese opción: '))
+        if op == 1:
+            sueldos_empleados = generar()
+            print("Sueldos generados:")
+            for empleado, sueldo in sueldos_empleados.items():
+                print(f"{empleado}: ${sueldo:,}")
+        elif op == 2:
+            if not sueldos_empleados:
+                sueldos_empleados = generar()
+            clasificar(sueldos_empleados)
+        elif op == 3:
+            if not sueldos_empleados:
+                sueldos_empleados = generar()
+            estadistica(sueldos_empleados)
+        elif op == 4:
+            if not sueldos_empleados:
+                sueldos_empleados = generar()
+            reporteSueldo(sueldos_empleados)
+        elif op == 5:
+            print("Saliendo del programa...")
+            break
+
+# Llamada al menú principal
+menu()
