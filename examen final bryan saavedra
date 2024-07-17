@@ -1,0 +1,77 @@
+import random
+
+trabajadores = ["Juan Pérez", "María Garcia", "Carlos López", "Ana Martínez", "Pedro Rodríguez", "Laura Hernández", "Miguel Sánchez", "Isabel Gómez", "Francisco Díaz", "Elena Fernández"]
+sueldos = []
+
+def asignarsueldos():
+    """Asigna sueldos aleatorios a los trabajadores."""
+    global sueldos
+    sueldos = [random.randint(300000, 2500000) for _ in trabajadores]
+    print("Sueldos asignados correctamente.")
+
+def clasificarsueldos():
+    """Clasifica y muestra los sueldos de los trabajadores."""
+    if not sueldos:
+        print("Primero debes asignar los sueldos.")
+        return
+
+    orden = input("Ingrese '1' para ordenar de menor a mayor o '2' para ordenar de mayor a menor: ")
+    if orden == '1':
+        sueldosordenados = sorted(sueldos)
+    elif orden == '2':
+        sueldosordenados = sorted(sueldos, reverse=True)
+    else:
+        print("Opción no válida.")
+        return
+
+    print("Sueldos clasificados: ")
+    for sueldo in sueldosordenados:
+        print(f"${sueldo:,}")
+
+def ver_estadisticas():
+    """Muestra estadísticas de los sueldos de los trabajadores."""
+    if not sueldos:
+        print("Primero debes asignar los sueldos.")
+        return
+
+    sueldopromedio = sum(sueldos) / len(sueldos)
+    sueldomaximo = max(sueldos)
+    sueldominimo = min(sueldos)
+    print(f"Sueldo Promedio: ${sueldopromedio:,.2f}")
+    print(f"Sueldo Máximo: ${sueldomaximo:,}")
+    print(f"Sueldo Mínimo: ${sueldominimo:,}")
+
+def reportesueldos():
+    if not sueldos:
+        print("Primero debes asignar los sueldos.")
+        return
+
+    print("Reporte de sueldos:")
+    for trabajador, sueldo in zip(trabajadores, sueldos):
+        print(f"{trabajador}: ${sueldo:,}")
+
+def menu():
+    while True:
+        print("\n Menú ")
+        print("1. Asignar sueldos aleatorios")
+        print("2. Clasificar sueldos")
+        print("3. Ver estadísticas")
+        print("4. Reporte de sueldos")
+        print("5. Salir del programa")
+        
+        op = input("Seleccione una opción: ")
+        
+        if op == '1':
+            asignarsueldos()
+        elif op == '2':
+            clasificarsueldos()
+        elif op == '3':
+            ver_estadisticas()
+        elif op == '4':
+            reportesueldos()
+        elif op == '5':
+            print("Saliendo del programa...")
+            break
+        else:
+            print("Opción no válida. Por favor, intente de nuevo.")
+menu()
